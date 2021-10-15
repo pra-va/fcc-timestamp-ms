@@ -3,12 +3,27 @@ const router = express.Router();
 
 router
     .get("/:date", (req, res) => {
-        console.log(req.params.date)
-        const date = new Date(Date.parse(req.params.date));
-        res.json({
-            unix: date.getTime(),
-            utc: date.toUTCString()
-        });
+        const dateParam = req.params.date;
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        const timestampRegex = /^\d{13}$/;
+
+        if (dateParam.match(dateRegex)) {
+            const date = new Date(Date.parse(req.params.date));
+            res.json({
+                unix: date.getTime(),
+                utc: date.toUTCString()
+            });
+        } else if (dateParam.match(timestampRegex)) {
+            const date = new Date(Number(dateParam));
+            res.json({
+                unix: Number(dateParam),
+                utc: date.toUTCString()
+            });
+        } else {
+            res.json({
+                error: "Invalid Date"
+            })
+        }
     });
 
 module.exports = router;
