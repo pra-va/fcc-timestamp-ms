@@ -11,10 +11,9 @@ router
     })
     .get("/:date", (req, res) => {
         const dateParam = req.params.date;
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         const timestampRegex = /^\d{13}$/;
 
-        if (dateParam.match(dateRegex)) {
+        if (isNaN(Date.parse(dateParam)) === false) {
             const date = new Date(Date.parse(req.params.date));
             res.json({
                 unix: date.getTime(),
