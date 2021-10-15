@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 router
+    .get("/", (req, res) => {
+        const date = new Date();
+        res.json({
+            unix: date.getTime(),
+            utc: date.toUTCString()
+        });
+    })
     .get("/:date", (req, res) => {
         const dateParam = req.params.date;
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
